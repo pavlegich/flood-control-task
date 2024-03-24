@@ -24,7 +24,7 @@ type Controller struct {
 
 // NewController creates and returns new server controller.
 func NewController(ctx context.Context, rw rwmanager.RWService, db *sql.DB, cfg *config.Config) *Controller {
-	flood := flood.NewFloodController(ctx, repo.NewDataRepository(ctx, db), cfg)
+	flood := flood.NewFloodController(ctx, repo.NewFloodRepository(ctx, db), cfg)
 
 	return &Controller{
 		rw:    rw,
@@ -33,7 +33,7 @@ func NewController(ctx context.Context, rw rwmanager.RWService, db *sql.DB, cfg 
 	}
 }
 
-// HandleCommand handles commands from the input and does it, if the requested action is correct.
+// HandleCommand handles commands from the input and does the requested action.
 func (c *Controller) HandleCommand(ctx context.Context) error {
 	c.rw.Write(ctx, "Type the command 'check', or exit: ")
 	act, err := c.rw.Read(ctx)
@@ -44,11 +44,11 @@ func (c *Controller) HandleCommand(ctx context.Context) error {
 	act = strings.ToLower(act)
 	switch act {
 	case "check":
-		ok, err := c.flood.Check(ctx, 1)
-		if err != nil {
-			return fmt.Errorf("HandleCommand: %w", err)
-		}
+		ok, err := c.flood.Check(ctx, c.cfg.UserID)
 		if !ok {
+			if err != nil {
+				return fmt.Errorf("HandleCommand: %w", err)
+			}
 			return fmt.Errorf("HandleCommand: %w", errs.ErrLimitExceeded)
 		}
 	case "exit":

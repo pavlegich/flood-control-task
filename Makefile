@@ -1,3 +1,8 @@
+DATABASE_DSN = postgresql://localhost:5432/flood
+PERIOD = 60s
+CALLS = 20
+USER_ID = 1
+
 DOC_PORT = 6060
 
 SERVER_BINARY_NAME = server
@@ -34,7 +39,7 @@ build:
 
 ## run: run the server
 run: build
-	/tmp/bin/$(SERVER_BINARY_NAME)
+	/tmp/bin/$(SERVER_BINARY_NAME) -d=$(DATABASE_DSN) -p=$(PERIOD) -c=$(CALLS) -id=$(USER_ID)
 
 # ====================
 # DOCUMENTATION

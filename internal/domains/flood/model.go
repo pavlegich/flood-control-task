@@ -18,5 +18,5 @@ type FloodControl interface {
 // Repository describes methods related with FloodControl object
 // for interaction with database.
 type Repository interface {
-	GetReqCountByUserID(ctx context.Context, userID int64, limit time.Time) (int, error)
+	CreateCall(ctx context.Context, userID int64, limit time.Duration) (int, error)
 }

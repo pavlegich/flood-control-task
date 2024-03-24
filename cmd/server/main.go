@@ -39,7 +39,7 @@ func main() {
 	wg := &sync.WaitGroup{}
 
 	// Logger
-	err := logger.Init(ctx, "Info")
+	err := logger.Init(ctx, "Panic")
 	if err != nil {
 		logger.Log.Error("main: logger initialization failed", zap.Error(err))
 	}
