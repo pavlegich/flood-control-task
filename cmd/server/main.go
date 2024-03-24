@@ -17,6 +17,8 @@ import (
 	"github.com/pavlegich/flood-control-task/internal/server"
 	"github.com/pavlegich/flood-control-task/internal/utils"
 	"go.uber.org/zap"
+
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func main() {
@@ -58,7 +60,7 @@ func main() {
 	defer db.Close()
 
 	// Server
-	ctrl := controllers.NewController(ctx, rw, cfg)
+	ctrl := controllers.NewController(ctx, rw, db, cfg)
 	server, err := server.NewServer(ctx, ctrl, rw, cfg)
 	if err != nil {
 		logger.Log.Error("main: create new server failed", zap.Error(err))
@@ -96,12 +98,4 @@ func main() {
 	}
 
 	rw.Writeln(ctx, utils.Quit)
-}
-
-// FloodControl интерфейс, который нужно реализовать.
-// Рекомендуем создать директорию-пакет, в которой будет находиться реализация.
-type FloodControl interface {
-	// Check возвращает false если достигнут лимит максимально разрешенного
-	// кол-ва запросов согласно заданным правилам флуд контроля.
-	Check(ctx context.Context, userID int64) (bool, error)
 }

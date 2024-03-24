@@ -22,6 +22,9 @@ const (
 
 // GetKnownErr checks the error and returns it, if it is known.
 func GetKnownErr(err error) error {
+	if errors.Is(err, errs.ErrLimitExceeded) {
+		return errs.ErrLimitExceeded
+	}
 	if errors.Is(err, errs.ErrUnknownCommand) {
 		return errs.ErrUnknownCommand
 	}
