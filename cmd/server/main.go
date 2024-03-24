@@ -30,11 +30,9 @@ func main() {
 	// Manager for read and write
 	rw := rwmanager.NewRWManager(ctx, os.Stdin, os.Stdout)
 
-	// f, _ := os.Open("../../test/commands")
-	// rw := rwmanager.NewRWManager(ctx, f, os.Stdout)
-
 	// Greeting
 	rw.Writeln(ctx, utils.Greet)
+
 	// WaitGroup
 	wg := &sync.WaitGroup{}
 

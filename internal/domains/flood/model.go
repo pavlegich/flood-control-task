@@ -1,5 +1,5 @@
 // Package flood contains object and methods for
-// checking the user flood.
+// checking the user calls count.
 package flood
 
 import (
